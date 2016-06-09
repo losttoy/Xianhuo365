@@ -1,0 +1,19 @@
+login.jsp
+  regMes = 'regSuc' 弹对话框注册成功
+  loginMes = 'loginErr'
+  loginMes = 'loginNotValid'
+reg.jsp
+  regMes = 'regFail' 弹对话框注册失败
+perinfo.jsp
+  perchgMes = 'chgSuc'
+  perchgMes = 'chgErr'
+chgPwd.jsp
+  pwdchgMes = 'chgSuc'
+  perchgMes = 'chgErr'
+sale.jsp
+  saleMes = 'saleSuc'
+  saleMes = 'saleErr'
+  
+  userbean 不为空代表登录成功
+  注销的时候清空userbean
+  直接用地址访问需要检查userbean是否为空，是的话切到登录界面
