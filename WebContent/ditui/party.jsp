@@ -19,7 +19,7 @@
   <html>
     <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <title>今日活动 地推管理</title>
+    <title>今日活动 业绩系统</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <!-- 引入 Bootstrap -->
     <link href="res/css/bootstrap-combined.min.css" rel="stylesheet" media="screen">
@@ -42,12 +42,15 @@
             </button>
             <ul class="dropdown-menu">
               <li>
-                <a href="doing.jsp">所有地推组</a></li>
+                <a href="doing.jsp?index=1">所有地推组</a></li>
               <li>
                 <a href="perinfo.jsp">维护个人信息</a></li>
               <li class="divider"></li>
               <li>
                 <a href="quit.do">注销</a></li>
+              <li class="divider"></li>
+              <li>
+                <a href="nav.jsp">回到首页</a></li>
             </ul>
           </div>
           <div class="page-header"></div>
@@ -80,10 +83,17 @@
               <li>时间：<%=bean.getPtyDte() %></li>
               <li>组长：<%=bean.getOwnNam() %></li>
               <li>销售总额（实时）：<%=bean.getSales() %>元</li>
-              <li>场地费：<%=bean.getFee1() %>元</li>
-              <li>物料费：<%=bean.getFee2() %>元</li>
-              <li>车辆费：<%=bean.getFee3() %>元</li>
-              <li>杂项：<%=bean.getFee4() %>元</li>
+              <%
+                if (bean.isRemainValid()) {
+              %>
+              <p>销售业绩：￥<%=bean.getYeji() %>（参考）</p>
+              <%
+                } else {
+              %>
+              <p>销售业绩：待商品清算盘点损耗后才能展示业绩</p> 
+              <%
+                }
+              %>
             </ul>
           </p>
           <p>

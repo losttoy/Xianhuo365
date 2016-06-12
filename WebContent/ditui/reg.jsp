@@ -34,7 +34,7 @@
       <div class="row-fluid"><!--标题-->
         <div class="span12">
           <div class="page-header">
-            <h1>注册<small>地推管理</small>
+            <h1>注册<small>业绩系统</small>
             </h1>
           </div>
         </div>
@@ -48,6 +48,8 @@
               <input type="text" name="mbl" placeholder="手机号..." />
               <label></label>
               <input type="text" name="id" placeholder="员工号..." />
+              <label></label>
+              <input type="text" name="name" placeholder="姓名..." />
               <label></label>
               <input type="password" name="pwd1" placeholder="输入密码..." />
               <label></label>
@@ -96,6 +98,12 @@
           if (validate_required(id, "请输入员工号!") == false)
           {
             id.focus();
+            return false;
+          }
+          
+          if (validate_required(name, "请输入姓名!") == false)
+          {
+            name.focus();
             return false;
           }
           

@@ -12,10 +12,10 @@
  *
  * @UpdateHist   1.0,2016年6月6日 Will Created
  ****************
- *               1.1,2016年6月6日 Will Update
- *                          修改原因:
- *                          需求提交人:
- *                          代码检视人:
+ *               1.1,2016年6月11日 Will Update
+ *                          修改原因:销售录入的时候记录活动信息表的成本价
+ *                          需求提交人:天天鲜活
+ *                          代码检视人:none
  ****************
  *
  * CopyRight 2016 LostToy. All rights reserved.
@@ -63,7 +63,7 @@ public class ProductUtil {
       //进事务控制
       conn.setAutoCommit(false);
       //1.INSERT人员商品销售表
-      final String SELECT_SQL1 = "SELECT a.relptyid, a.relprdpriO, "
+      final String SELECT_SQL1 = "SELECT a.relptyid, a.relprdpriO, a.relprdpriI, "
           + "b.ptygrpid, c.usrniknam"
           + " FROM Ditui_ptyprd a"
           + " LEFT JOIN Ditui_party b ON a.relptyid = b.ptyid,"
@@ -79,9 +79,10 @@ public class ProductUtil {
         conn.setAutoCommit(true);
         return false;
       }
-      //活动ID和销售单价需要单独保存以备后用
+      //活动ID和销售单价、进货单价需要单独保存以备后用
       int ptyId = rs.getInt("relptyid");
       double price = rs.getDouble("relprdpriO");
+      double priceIn = rs.getDouble("relprdpriI");
       
       final String INSERT_SQL1 = "INSERT INTO [Ditui_usrprd]"
           + " ([relusrid], [relusrnam], [relgrpid], [relptyid],"
@@ -136,7 +137,7 @@ public class ProductUtil {
       //3.UPDATE活动信息表
       //处理数据不一致，使用乐观锁
       //活动销售总额  ++
-      final String SELECT_SQL3 = "SELECT [ptysalamt], [ptymnttim]"
+      final String SELECT_SQL3 = "SELECT [ptysalamt], [ptysalamtIn], [ptymnttim]"
           + " FROM [Ditui_party]"
           + " WHERE [ptyid] = ?";
       pstmt5 = conn.prepareStatement(SELECT_SQL3);
@@ -149,12 +150,13 @@ public class ProductUtil {
         return false;
       }
       final String UPDATE_SQL3 = "UPDATE [Ditui_party]"
-          + " SET [ptysalamt] = ?, [ptymnttim] = GETDATE()"
+          + " SET [ptysalamt] = ?, [ptysalamtIn] = ?, [ptymnttim] = GETDATE()"
           + " WHERE [ptyid] = ? AND [ptymnttim] = ?";
       pstmt6 = conn.prepareStatement(UPDATE_SQL3);
       pstmt6.setDouble(1, rs3.getDouble("ptysalamt") + quantity * price);
-      pstmt6.setInt(2, ptyId);
-      pstmt6.setTimestamp(3, rs3.getTimestamp("ptymnttim"));
+      pstmt6.setDouble(2, rs3.getDouble("ptysalamtIn") + quantity * priceIn);
+      pstmt6.setInt(3, ptyId);
+      pstmt6.setTimestamp(4, rs3.getTimestamp("ptymnttim"));
       if (0 == pstmt6.executeUpdate()) {
         //更新活动信息表失败，事务回滚，返回失败
         conn.rollback();

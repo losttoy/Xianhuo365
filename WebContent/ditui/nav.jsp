@@ -35,7 +35,7 @@
               <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
               
                 <!--仪表盘标题-->
-                <h1 class="page-header">天天鲜活<small>地推管理</small></h1>
+                <h1 class="page-header">天天鲜活<small>业绩系统</small></h1>
                 
                 <!--仪表盘List-->
                 <div class="row placeholders">
@@ -52,7 +52,7 @@
                   <div class="col-xs-6 col-sm-3 placeholder">
                     <a href="doing.jsp?index=1">
                       <img class="img-responsive" alt="200x200" src="res/icon/ic_account_balance_black_48dp.png" /></a>
-                    <h4>所有地推组</h4>
+                    <h4>所有地推组活动</h4>
                     <span class="text-muted">看看同事们在做什么</span>
               </div><!--END 看看同事们在做什么-->
                   

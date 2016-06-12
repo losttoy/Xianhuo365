@@ -37,7 +37,7 @@
 <html>
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <title>登录 地推管理</title>
+    <title>登录业绩系统</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <!-- 引入 Bootstrap -->
     <link href="res/css/bootstrap-combined.min.css" rel="stylesheet" media="screen">
@@ -55,7 +55,7 @@
       <div class="row-fluid"><!--标题-->
         <div class="span12">
           <div class="page-header">
-            <h1>登录<small>地推管理</small>
+            <h1>登录<small>业绩系统</small>
             </h1>
           </div>
         </div>

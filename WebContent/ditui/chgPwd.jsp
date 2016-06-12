@@ -39,7 +39,7 @@
 <html>
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <title>修改密码 地推管理</title>
+    <title>修改密码 业绩系统</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <!-- 引入 Bootstrap -->
     <link href="res/css/bootstrap-combined.min.css" rel="stylesheet" media="screen">
@@ -64,10 +64,13 @@
               <li>
                 <a href="party.jsp">今日活动</a></li>
               <li>
-                <a href="doing.jsp">所有地推组</a></li>
+                <a href="doing.jsp?index=1">所有地推组</a></li>
               <li class="divider"></li>
               <li>
                 <a href="quit.do">注销</a></li>
+              <li class="divider"></li>
+              <li>
+                <a href="nav.jsp">回到首页</a></li>
             </ul>
           </div>
           <div class="page-header"></div>

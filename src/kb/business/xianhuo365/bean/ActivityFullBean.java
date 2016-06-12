@@ -37,10 +37,13 @@ public class ActivityFullBean {
   private String ptyAdr;
   private String ptyDte;
   private double sales;
+  private boolean isRemainValid;
+  private double yeji;
   private double fee1;
   private double fee2;
   private double fee3;
   private double fee4;
+  
   /**
    * @return groupId
    */
@@ -126,6 +129,30 @@ public class ActivityFullBean {
     this.sales = sales;
   }
   /**
+   * @return isRemainValid
+   */
+  public boolean isRemainValid() {
+    return isRemainValid;
+  }
+  /**
+   * @param isRemainValid the isRemainValid to set
+   */
+  public void setRemainValid(boolean isRemainValid) {
+    this.isRemainValid = isRemainValid;
+  }
+  /**
+   * @return yeji
+   */
+  public double getYeji() {
+    return yeji;
+  }
+  /**
+   * @param yeji the yeji to set
+   */
+  public void setYeji(double yeji) {
+    this.yeji = yeji;
+  }
+  /**
    * @return fee1
    */
   public double getFee1() {
@@ -173,6 +200,7 @@ public class ActivityFullBean {
   public void setFee4(double fee4) {
     this.fee4 = fee4;
   }
+  
   /**
    * @return
    * @see java.lang.Object#toString()
@@ -181,8 +209,9 @@ public class ActivityFullBean {
   public String toString() {
     return "ActivityFullBean [groupId=" + groupId + ", groupNam=" + groupNam
         + ", ownNam=" + ownNam + ", ptyId=" + ptyId + ", ptyAdr=" + ptyAdr
-        + ", ptyDte=" + ptyDte + ", sales=" + sales + ", fee1=" + fee1
-        + ", fee2=" + fee2 + ", fee3=" + fee3 + ", fee4=" + fee4 + "]";
+        + ", ptyDte=" + ptyDte + ", sales=" + sales + ", isRemainValid="
+        + isRemainValid + ", yeji=" + yeji + ", fee1=" + fee1 + ", fee2="
+        + fee2 + ", fee3=" + fee3 + ", fee4=" + fee4 + "]";
   }
   
 }

@@ -23,7 +23,7 @@
 <html>
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <title>所有地推组 地推管理</title>
+    <title>所有地推组 业绩系统</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <!-- 引入 Bootstrap -->
     <link href="res/css/bootstrap-combined.min.css" rel="stylesheet" media="screen">
@@ -52,6 +52,9 @@
               <li class="divider"></li>
               <li>
                 <a href="quit.do">注销</a></li>
+              <li class="divider"></li>
+              <li>
+                <a href="nav.jsp">回到首页</a></li>
             </ul>
           </div>
           <div class="page-header"></div>
@@ -64,20 +67,27 @@
           for (int i = 1; i <= list.size(); ++i) {
             ActivityFullBean b = ActivityFullUtil.getActFul2(((ActivityFullBean)list.get(i - 1)).getPtyId());
             if (null != b) {
-        %>
-          <h2><%=i %>：<%=b.getGroupNam() %></h2>
+          %>
+          <h2><%=i + (index - 1) * NUM_PER_PAGE%>：<%=b.getGroupNam() %></h2>
           <p>地点：<%=b.getPtyAdr() %></p>
           <p>时间：<%=b.getPtyDte() %></p>
           <p>组长：<%=b.getOwnNam() %></p>
-          <p>销售总额（实时）：<%=b.getSales() %>元</p>
-          <p>场地费：：<%=b.getFee1() %>元</p>
-          <p>物料费：：<%=b.getFee2() %>元</p>
-          <p>车辆费：<%=b.getFee3() %>元</p>
-          <p>杂项：<%=b.getFee4() %>元</p>
-        <%
+          <p>销售总额（实时）：￥<%=b.getSales() %></p>
+          <%
+            if (b.isRemainValid()) {
+          %>
+          <p>销售业绩：￥<%=b.getYeji() %>（参考）</p>
+          <%
+            } else {
+          %>
+          <p>销售业绩：待商品清算盘点损耗后才能展示业绩</p> 
+          <% 
             }
           }
+        }
         %>
+        
+        
           <div class="pagination pagination-centered">
             <ul>
             <%
@@ -90,7 +100,7 @@
                 } else {
             %>
               <li>
-                <a href="doing?index=<%=i %>"><%=i %></a></li>
+                <a href="doing.jsp?index=<%=i %>"><%=i %></a></li>
             <%
                 }
               }

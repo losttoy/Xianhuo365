@@ -75,10 +75,12 @@ public class RegServlet extends HttpServlet {
     session.removeAttribute("regMes");
     String mbl = req.getParameter("mbl");
     String id = req.getParameter("id");
+    String name = req.getParameter("name");
     String pwd = req.getParameter("pwd1");
     UserBean ub = new UserBean();
     ub.setPhone(mbl);
     ub.setWrkId(id);
+    ub.setNikNam(name);
     ub.setPwd(pwd);
     if (UserUtil.reg(ub)) {
       session.setAttribute("regMes", "regSuc");

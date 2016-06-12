@@ -13,9 +13,9 @@
  * @UpdateHist   1.0,2016年6月5日 Will Created
  ****************
  *               1.1,2016年6月5日 Will Update
- *                          修改原因:
- *                          需求提交人:
- *                          代码检视人:
+ *                          修改原因:增加地推组活动日业绩的计算
+ *                          需求提交人:天天鲜活
+ *                          代码检视人:none
  ****************
  *
  * CopyRight 2016 LostToy. All rights reserved.
@@ -59,7 +59,7 @@ public class ActivityFullUtil {
   public static ActivityFullBean getActFul2(int ptyId) {
     Connection conn = DataBaseUtil.getConnectionDS("sqlserver/default");
     final String SELECT_SQL = "SELECT a.ptygrpid, b.grpnam, c.refusrnam, "
-        + "a.ptyid, a.ptyadr, a.ptydte, a.ptysalamt, "
+        + "a.ptyid, a.ptyadr, a.ptydte, a.ptysalamt, a.ptysalamtIn, a.ptylstamt, a.ptyrate, "
         + "a.ptyfee1, a.ptyfee2, a.ptyfee3, a.ptyfee4 "
         + "FROM Ditui_party a "
         + "LEFT JOIN Ditui_group b ON a.ptygrpid = b.grpid "
@@ -85,6 +85,18 @@ public class ActivityFullUtil {
         bean.setFee2(rs.getDouble("ptyfee2"));
         bean.setFee3(rs.getDouble("ptyfee3"));
         bean.setFee4(rs.getDouble("ptyfee4"));
+        if (null != (rs.getObject("ptylstamt"))) {
+          //业绩可用
+          //业绩=比例*（销售总额-销售总额（成本）-场地-物料-车辆-杂项-损耗）
+          bean.setRemainValid(true);
+          bean.setYeji(rs.getDouble("ptyrate") / 100.0 * //比例 / 100 *
+              (bean.getSales() - rs.getDouble("ptysalamtIn") //销售总额-销售总额（成本）
+                  -bean.getFee1() - bean.getFee2() - bean.getFee3() - bean.getFee4() //-场地-物料-车辆-杂项
+                  - rs.getDouble("ptylstamt")));//-损耗
+        } else {
+          bean.setRemainValid(false);
+          bean.setYeji(0.0f);
+        }
         return bean;
       } else {
         return null;
@@ -112,7 +124,7 @@ public class ActivityFullUtil {
   public static ArrayList<ActivityFullBean> getActFul1(int usrId) {
     Connection conn = DataBaseUtil.getConnectionDS("sqlserver/default");
     final String SELECT_SQL = "SELECT a.relgrpid, b.grpnam, d.refusrnam, "
-        + "c.ptyid, c.ptyadr, c.ptydte, c.ptysalamt, "
+        + "c.ptyid, c.ptyadr, c.ptydte, c.ptysalamt, c.ptysalamtIn, c.ptylstamt, c.ptyrate, "
         + "c.ptyfee1, c.ptyfee2, c.ptyfee3, c.ptyfee4 "
         + "FROM(Ditui_grpusrrel a "
         + "LEFT JOIN Ditui_group b ON a.relgrpid = b.grpid "
@@ -140,6 +152,18 @@ public class ActivityFullUtil {
         bean.setFee2(rs.getDouble("ptyfee2"));
         bean.setFee3(rs.getDouble("ptyfee3"));
         bean.setFee4(rs.getDouble("ptyfee4"));
+        if (null != (rs.getObject("ptylstamt"))) {
+          //业绩可用
+          //业绩=比例*（销售总额-销售总额（成本）-场地-物料-车辆-杂项-损耗）
+          bean.setRemainValid(true);
+          bean.setYeji(rs.getDouble("ptyrate") / 100.0 * //比例 / 100 *
+              (bean.getSales() - rs.getDouble("ptysalamtIn") //销售总额-销售总额（成本）
+                  -bean.getFee1() - bean.getFee2() - bean.getFee3() - bean.getFee4() //-场地-物料-车辆-杂项
+                  - rs.getDouble("ptylstamt")));//-损耗
+        } else {
+          bean.setRemainValid(false);
+          bean.setYeji(0.0f);
+        }
         list.add(bean);
       }
       return list;
@@ -187,14 +211,16 @@ public class ActivityFullUtil {
           aLbean.setNum((total - 1) / num + 1);
         }
       }
-      final String SELECT_SQL2 = "SELECT TOP " + num +  " ptyid FROM (Ditui_party a "
-          + "INNER JOIN Ditui_group b ON a.ptygrpid = b.grpid) "
-          + "WHERE ((ptyid NOT IN(SELECT TOP " + ((page - 1) * num) + " ptyid FROM Ditui_party ORDER BY ptyid))"
-          + " AND (ptydte = ?)"
-          + " AND b.grpshwflg = 'Y')"
-          + " ORDER BY ptyid;";
+      final String SELECT_SQL2 = "SELECT TOP " + num + " ptyid FROM (Ditui_party a"
+          + " INNER JOIN Ditui_group b ON a.ptygrpid = b.grpid)"
+          + " WHERE ((ptyid NOT IN"
+          + "(SELECT TOP " + ((page - 1) * num) + " ptyid "
+              + "FROM (Ditui_party a  INNER JOIN Ditui_group b ON a.ptygrpid = b.grpid) "
+              + "WHERE ((a.ptydte = ?)  AND (b.grpshwflg = 'Y')) ORDER BY ptyid)) "
+              + "AND (a.ptydte = ?)  AND (b.grpshwflg = 'Y')) ORDER BY ptyid;";
       pstmt2 = conn.prepareStatement(SELECT_SQL2);
       pstmt2.setString(1, DateFormatUtil.getYYYYMMdd());
+      pstmt2.setString(2, DateFormatUtil.getYYYYMMdd());
       rs2 = pstmt2.executeQuery();
       ArrayList<ActivityFullBean> list = new ArrayList<ActivityFullBean>();
       while (rs2.next()) {
