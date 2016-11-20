@@ -12,16 +12,17 @@
  *
  * @UpdateHist   1.0,2016年6月5日 Will Created
  ****************
- *               1.1,2016年6月5日 Will Update
- *                          修改原因:
- *                          需求提交人:
- *                          代码检视人:
+ *               1.1,2016年6月14日 Will Update
+ *                          修改原因:计算密码使用UTF-8编码
+ *                          需求提交人:天天鲜活
+ *                          代码检视人:none
  ****************
  *
  * CopyRight 2016 LostToy. All rights reserved.
  */
 package kb.business.xianhuo365.util;
 
+import java.io.UnsupportedEncodingException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -208,21 +209,21 @@ public class UserUtil {
     }
     Connection conn = DataBaseUtil.getConnectionDS("sqlserver/default");
     final String INSERT_SQL = "INSERT INTO [Ditui_user]"
-        + " ([usrphone], [usrwrkid], [usrniknam], [usrpwdsha], [usrsta], [usrregtim], [usrmnttim])"
-        + " VALUES (?, ?, ?, ?, 'A', GETDATE(), GETDATE())";
+        + " ([usrphone], [usrwrkid], [usrniknam], [usrpwdsha], [usrsta], [usrtype], [usrregtim], [usrmnttim])"
+        + " VALUES (?, ?, ?, ?, 'A', '0', GETDATE(), GETDATE())";
     PreparedStatement pstmt = null;
     try {
       pstmt = conn.prepareStatement(INSERT_SQL);
       pstmt.setString(1, ub.getPhone());
       pstmt.setString(2, ub.getWrkId());
       pstmt.setString(3, ub.getNikNam());
-      pstmt.setString(4, DigestUtils.encodeSHAHex((ub.getPhone() + ub.getPwd()).getBytes()));
+      pstmt.setString(4, DigestUtils.encodeSHAHex((ub.getPhone() + ub.getPwd()).getBytes("UTF-8")));
       int result = pstmt.executeUpdate();
       if (1 == result) {
         return true;
       }
       return false;
-    } catch (SQLException e) {
+    } catch (SQLException | UnsupportedEncodingException e) {
       e.printStackTrace();
       return false;
     } finally {
@@ -234,11 +235,5 @@ public class UserUtil {
   }
   
   public static void main(String[] args) {
-    UserBean ub = new UserBean();
-    ub.setPhone("18257173989");
-    ub.setWrkId("5566");
-    ub.setNikNam("tt4");
-    ub.setPwd("123456");
-    System.out.println(UserUtil.reg(ub));
   }
 }

@@ -47,7 +47,7 @@
               <legend>注册信息</legend>
               <input type="text" name="mbl" placeholder="手机号..." />
               <label></label>
-              <input type="text" name="id" placeholder="员工号..." />
+              <input type="text" name="id" placeholder="员工号（五位数字）..." />
               <label></label>
               <input type="text" name="name" placeholder="姓名..." />
               <label></label>
@@ -89,6 +89,18 @@
       {
         with (thisform)
         {
+          var reg=/^\d+$/;
+          if (!reg.test(id.value)) {
+              alert("员工号应该是五位数字");
+              id.focus();
+              return false;
+          }
+          if (id.value.length != 5)
+          {
+        	alert("员工号应该是五位数字");
+            id.focus();
+            return false;
+          }
           if (validate_required(mbl, "请输入手机号码!") == false)
           {
         	mbl.focus();

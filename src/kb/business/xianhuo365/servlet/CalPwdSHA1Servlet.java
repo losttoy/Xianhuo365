@@ -13,9 +13,9 @@
  * @UpdateHist   1.0,2016年6月9日 Will Created
  ****************
  *               1.1,2016年6月9日 Will Update
- *                          修改原因:
- *                          需求提交人:
- *                          代码检视人:
+ *                          修改原因:计算密码使用UTF-8编码
+ *                          需求提交人:天天鲜活
+ *                          代码检视人:none
  ****************
  *
  * CopyRight 2016 LostToy. All rights reserved.
@@ -71,7 +71,7 @@ public class CalPwdSHA1Servlet extends HttpServlet {
     req.setCharacterEncoding("UTF-8");
     String phone = req.getParameter("phone");
     String pwd = req.getParameter("pwd");
-    resp.getWriter().print(DigestUtils.encodeSHAHex((phone + pwd).getBytes()));
+    resp.getWriter().print(DigestUtils.encodeSHAHex((phone + pwd).getBytes("UTF-8")));
   }
 
   /**

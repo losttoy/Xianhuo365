@@ -73,16 +73,7 @@
           <p>时间：<%=b.getPtyDte() %></p>
           <p>组长：<%=b.getOwnNam() %></p>
           <p>销售总额（实时）：￥<%=b.getSales() %></p>
-          <%
-            if (b.isRemainValid()) {
-          %>
-          <p>销售业绩：￥<%=b.getYeji() %>（参考）</p>
-          <%
-            } else {
-          %>
-          <p>销售业绩：待商品清算盘点损耗后才能展示业绩</p> 
           <% 
-            }
           }
         }
         %>
